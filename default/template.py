@@ -5,7 +5,8 @@
 
 def get_input() -> str:
     from pathlib import Path
-    filepath_txt = Path("inputs", Path(__file__).name).with_suffix(".txt")
+    filename_number = Path(__file__).name.partition("_")[0]
+    filepath_txt = Path("inputs", filename_number).with_suffix(".txt")
 
     with open(filepath_txt, "r", encoding="utf-8") as f:
         return f.read().strip()
