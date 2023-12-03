@@ -1,19 +1,16 @@
 
 import argparse
+import datetime as dt
 import requests
 from pathlib import Path
 
 from default.cookie import SESSION_COOKIE
 
-# Constants
-
-ADVENT_YEAR = 2023
-
 # Main
 
-def fetch_input(day: int) -> str:
+def fetch_input(day: int, advent_year: int) -> str:
     resp = requests.get(
-        "https://adventofcode.com/{}/day/{}/input".format(ADVENT_YEAR, day),
+        "https://adventofcode.com/{}/day/{}/input".format(advent_year, day),
         cookies={"session": SESSION_COOKIE},
         headers={"user-agent": "just a simple input fetcher (https://twitter.com/quackbarc)"}
     )
@@ -30,10 +27,12 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--day", "-d", required=True, help="The day to generate the script and fetch the input of.", type=int)
     parser.add_argument("--name", "-n", help="The name of the day. Must be a single word.")
+    parser.add_argument("--year", "-y", help="The year of the advent event. Defaults to the current year.", type=int)
     args = parser.parse_args()
 
     day: int = args.day
     day_name = str(day).zfill(2)
+    advent_year: int = args.year or dt.datetime.now().year
 
     if args.name:
         name = f"{day_name}_{args.name}"
@@ -57,11 +56,11 @@ def main():
     with open(template_file, "r", encoding="utf-8") as f:
         template = f.read()
     with open(py_file, "w", encoding="utf-8") as f:
-        f.write(template.format(ADVENT_YEAR, name))
+        f.write(template.format(advent_year, name))
         print(f"written {py_file}.")
 
     with open(input_file, "w", encoding="utf-8") as f:
-        input_text = fetch_input(day)
+        input_text = fetch_input(day, advent_year)
         f.write(input_text)
         print(f"written {input_file}.")
 
