@@ -56,7 +56,7 @@ def main():
     with open(template_file, "r", encoding="utf-8") as f:
         template = f.read()
     with open(py_file, "w", encoding="utf-8") as f:
-        f.write(template.format(advent_year, name))
+        f.write(template.format(advent_year, day_name))
         print(f"written {py_file}.")
 
     with open(input_file, "w", encoding="utf-8") as f:
