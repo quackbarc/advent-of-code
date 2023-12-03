@@ -6,6 +6,12 @@ from pathlib import Path
 
 from default.cookie import SESSION_COOKIE
 
+# Constants
+
+CONSOLE_BLUE = B = "\x1b[94m"
+CONSOLE_DARK_GRAY = D = "\x1b[90m"
+CONSOLE_RESET = R = "\x1b[0m"
+
 # Main
 
 def fetch_input(day: int, advent_year: int) -> str:
@@ -45,9 +51,11 @@ def main():
     input_file = Path(inputs_folder, f"{day_name}.txt")
     py_file = Path(f"{name}.py")
 
+    print(f"{B}File generation{R}")
+
     if py_file.exists():
         while True:
-            yn = input(f"\"{py_file}\" already exists. continue anyways? (Y/N): ")
+            yn = input(f"{R}  \"{py_file}\" already exists. continue anyways? (Y/N): ")
             if yn.lower().startswith("y"):
                 break
             elif yn.lower().startswith("n"):
@@ -57,12 +65,18 @@ def main():
         template = f.read()
     with open(py_file, "w", encoding="utf-8") as f:
         f.write(template.format(advent_year, day_name))
-        print(f"written {py_file}.")
+        print(f"{D}  day:{R} {day}")
+        print(f"{D}  year:{R} {advent_year}")
+        print(f"{R}  written \"{py_file}\".")
+
+    print()
+    print(f"{B}Input fetching{R}")
+    print(f"{D}  url:{R} https://adventofcode.com/{advent_year}/day/{day}/input")
 
     with open(input_file, "w", encoding="utf-8") as f:
         input_text = fetch_input(day, advent_year)
         f.write(input_text)
-        print(f"written {input_file}.")
+        print(f"{R}  written \"{input_file}\".")
 
 if __name__ == '__main__':
     main()
