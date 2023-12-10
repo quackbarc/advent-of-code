@@ -25,13 +25,9 @@ def main():
     col_pos = -1
 
     for line_pos, line in enumerate(lines):
-        match = re.search("S", line)
-
-        if match is None:
-            continue
-
-        col_pos = match.start()
-        break
+        if (match := re.search("S", line)):
+            col_pos = match.start()
+            break
 
     start_pos = (line_pos, col_pos)
     queue = [
